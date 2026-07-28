@@ -33,6 +33,8 @@ export function AsciiHero() {
       canvas.width = parent.clientWidth;
       canvas.height = parent.clientHeight;
 
+      if (canvas.width === 0 || canvas.height === 0) return;
+
       const offscreen = document.createElement("canvas");
       const step = 8;
       offscreen.width = canvas.width;
