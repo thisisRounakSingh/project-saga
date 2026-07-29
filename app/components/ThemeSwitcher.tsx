@@ -12,25 +12,24 @@ export function ThemeSwitcher() {
 
   const applyTheme = (t: string) => {
     const root = document.documentElement;
+    root.classList.remove("dark", "dim");
     if (t === "auto") {
       const systemDark = window.matchMedia(
         "(prefers-color-scheme: dark)",
       ).matches;
       if (systemDark) {
         root.classList.add("dark");
-      } else {
-        root.classList.remove("dark");
       }
     } else if (t === "dark") {
       root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
+    } else if (t === "dim") {
+      root.classList.add("dark", "dim");
     }
   };
 
   const cycleTheme = () => {
     const nextTheme =
-      theme === "auto" ? "light" : theme === "light" ? "dark" : "auto";
+      theme === "auto" ? "light" : theme === "light" ? "dark" : theme === "dark" ? "dim" : "auto";
     setTheme(nextTheme);
     localStorage.setItem("theme", nextTheme);
     applyTheme(nextTheme);
