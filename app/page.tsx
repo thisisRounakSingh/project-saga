@@ -92,16 +92,22 @@ export default function Home() {
                 {/* Carousel */}
                 <div className="mt-8 bg-black text-white border-[3px] border-border overflow-hidden flex py-4">
                   <div className="animate-marquee flex gap-8 px-4 text-sm font-bold tracking-widest uppercase w-max">
-                    <span>CODEX</span> <span>•</span> <span>ARCH BTW</span>{" "}
-                    <span>•</span> <span>REACT</span> <span>•</span>{" "}
-                    <span>NEXT.JS</span> <span>•</span> <span>TYPESCRIPT</span>{" "}
-                    <span>•</span> <span>CODEX</span> <span>•</span>{" "}
-                    <span>ARCH BTW</span> <span>•</span> <span>REACT</span>{" "}
-                    <span>•</span> <span>NEXT.JS</span> <span>•</span>{" "}
-                    <span>TYPESCRIPT</span> <span>•</span> <span>CODEX</span>{" "}
-                    <span>•</span> <span>ARCH BTW</span> <span>•</span>{" "}
-                    <span>REACT</span>
-                  </div>
+                  <span>CODEX</span> <span>•</span> <span>ARCH BTW</span>{" "}
+                  <span>•</span> <span>REACT</span> <span>•</span>{" "}
+                  <span>NEXT.JS</span> <span>•</span> <span>TYPESCRIPT</span>{" "}
+                  <span>•</span> <span>RUST</span> <span>•</span>{" "}
+                  <span>C++</span> <span>•</span> <span>JS</span>{" "}
+                  <span>•</span> <span>GO</span> <span>•</span>{" "}
+                  <span>PYTHON</span> <span>•</span> <span>WASM</span>{" "}
+                  <span>•</span> <span>CODEX</span> <span>•</span>{" "}
+                  <span>ARCH BTW</span> <span>•</span> <span>REACT</span>{" "}
+                  <span>•</span> <span>NEXT.JS</span> <span>•</span>{" "}
+                  <span>TYPESCRIPT</span> <span>•</span> <span>RUST</span>{" "}
+                  <span>•</span> <span>C++</span> <span>•</span>{" "}
+                  <span>JS</span> <span>•</span> <span>GO</span>{" "}
+                  <span>•</span> <span>PYTHON</span> <span>•</span>{" "}
+                  <span>WASM</span>
+                </div>
                 </div>
               </div>
             </div>
