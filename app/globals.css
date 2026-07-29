@@ -32,6 +32,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
+body:not(.native-cursor),
+body:not(.native-cursor) * {
+  cursor: none !important;
+}
 
 body {
   background: var(--background);

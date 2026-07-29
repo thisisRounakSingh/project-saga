@@ -1,4 +1,5 @@
 import { ThemeSwitcher } from "./components/ThemeSwitcher";
+import { CursorSwitcher } from "./components/CursorSwitcher";
 import { AsciiHero } from "./components/AsciiHero";
 import { FooterName } from "./components/FooterName";
 
@@ -43,6 +44,7 @@ export default function Home() {
             <button className="bg-inverted-bg text-inverted-fg px-4 py-1 text-xs border-[3px] border-border hover:opacity-80 transition-opacity">
               LOAD.SAGA &rarr;
             </button>
+            <CursorSwitcher />
             <ThemeSwitcher />
           </div>
         </nav>
