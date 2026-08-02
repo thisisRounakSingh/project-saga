@@ -262,6 +262,15 @@ export default function Home() {
               >
                 X
               </a>
+              ,{" "}
+              <a
+                href="https://instagram.com/thisisrounaksingh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent transition-colors underline decoration-2 underline-offset-4"
+              >
+                Instagram
+              </a>
             </span>
           </footer>
         </main>

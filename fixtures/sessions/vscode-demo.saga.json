@@ -29,6 +29,14 @@
         {
           "text": "Act 1: Massive architectural refactoring.",
           "revealed": true
+        },
+        {
+          "text": "The initial architecture introduces the core text-model and tree-view abstractions.",
+          "revealed": true
+        },
+        {
+          "text": "A substantial amount of boilerplate was created to set up the extension host communication layer via IPC.",
+          "revealed": true
         }
       ],
       "keyCommits": [],
@@ -426,7 +434,19 @@
           "summary": "Core module handling search functionality in act 1"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "Why was the extension host separated from the main thread?",
+          "answer": "To prevent third-party extensions from blocking the UI thread and freezing the editor.",
+          "confidence": "confirmed",
+          "supportingCommits": []
+        },
+        {
+          "question": "Is the tree-view implementation based on a virtualized list?",
+          "answer": "Given the performance optimizations in the text-model, it's highly likely the tree-view uses virtualization to handle large directories.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-2",
@@ -439,7 +459,15 @@
       "commitCount": 732,
       "narration": [
         {
-          "text": "Act 2: Massive architectural refactoring.",
+          "text": "Act 2: Architecture Phase 2",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 2.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -843,7 +871,13 @@
           "summary": "Core module handling search functionality in act 2"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 2?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-3",
@@ -856,7 +890,15 @@
       "commitCount": 988,
       "narration": [
         {
-          "text": "Act 3: Massive architectural refactoring.",
+          "text": "Act 3: Architecture Phase 3",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 3.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -1265,7 +1307,13 @@
           "summary": "Core module handling search functionality in act 3"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 3?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-4",
@@ -1278,7 +1326,15 @@
       "commitCount": 308,
       "narration": [
         {
-          "text": "Act 4: Massive architectural refactoring.",
+          "text": "Act 4: Architecture Phase 4",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 4.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -1667,7 +1723,13 @@
           "summary": "Core module handling search functionality in act 4"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 4?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-5",
@@ -1680,7 +1742,15 @@
       "commitCount": 695,
       "narration": [
         {
-          "text": "Act 5: Massive architectural refactoring.",
+          "text": "Act 5: Architecture Phase 5",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 5.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -2079,7 +2149,13 @@
           "summary": "Core module handling search functionality in act 5"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 5?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-6",
@@ -2092,7 +2168,15 @@
       "commitCount": 1026,
       "narration": [
         {
-          "text": "Act 6: Massive architectural refactoring.",
+          "text": "Act 6: Architecture Phase 6",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 6.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -2496,7 +2580,13 @@
           "summary": "Core module handling search functionality in act 6"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 6?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-7",
@@ -2509,7 +2599,15 @@
       "commitCount": 385,
       "narration": [
         {
-          "text": "Act 7: Massive architectural refactoring.",
+          "text": "Act 7: Architecture Phase 7",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 7.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -2893,7 +2991,13 @@
           "summary": "Core module handling search functionality in act 7"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 7?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-8",
@@ -2906,7 +3010,15 @@
       "commitCount": 1924,
       "narration": [
         {
-          "text": "Act 8: Massive architectural refactoring.",
+          "text": "Act 8: Architecture Phase 8",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 8.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -3320,7 +3432,13 @@
           "summary": "Core module handling search functionality in act 8"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 8?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-9",
@@ -3333,7 +3451,15 @@
       "commitCount": 906,
       "narration": [
         {
-          "text": "Act 9: Massive architectural refactoring.",
+          "text": "Act 9: Architecture Phase 9",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 9.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -3722,7 +3848,13 @@
           "summary": "Core module handling search functionality in act 9"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 9?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     },
     {
       "id": "act-10",
@@ -3735,7 +3867,15 @@
       "commitCount": 1243,
       "narration": [
         {
-          "text": "Act 10: Massive architectural refactoring.",
+          "text": "Act 10: Architecture Phase 10",
+          "revealed": true
+        },
+        {
+          "text": "During this phase, significant changes were made to support Architecture Phase 10.",
+          "revealed": true
+        },
+        {
+          "text": "Several modules were refactored, establishing new patterns that defined the next stage of the project's evolution.",
           "revealed": true
         }
       ],
@@ -4134,8 +4274,39 @@
           "summary": "Core module handling search functionality in act 10"
         }
       ],
-      "qa": []
+      "qa": [
+        {
+          "question": "What was the primary goal of the Architecture Phase 10?",
+          "answer": "The goal was to stabilize the architecture and prepare the codebase for scale.",
+          "confidence": "inferred"
+        }
+      ]
     }
   ],
-  "techStack": []
+  "techStack": [
+    {
+      "name": "Monaco Editor",
+      "role": "Core text editing and syntax highlighting engine",
+      "introducedAct": "act-1",
+      "docsUrl": "https://microsoft.github.io/monaco-editor/"
+    },
+    {
+      "name": "TypeScript",
+      "role": "Primary language for strict typing and tooling",
+      "introducedAct": "act-1",
+      "docsUrl": "https://www.typescriptlang.org/"
+    },
+    {
+      "name": "Electron",
+      "role": "Desktop application framework",
+      "introducedAct": "act-2",
+      "docsUrl": "https://www.electronjs.org/"
+    },
+    {
+      "name": "xterm.js",
+      "role": "Integrated terminal rendering",
+      "introducedAct": "act-3",
+      "docsUrl": "https://xtermjs.org/"
+    }
+  ]
 }

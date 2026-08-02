@@ -76,7 +76,7 @@ export function SearchBar() {
       className="relative flex items-center bg-background border-[3px] border-border shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff] h-12 overflow-hidden"
       initial={{ width: 48, borderRadius: 24 }}
       animate={{ 
-        width: isExpanded || searchQuery.length > 0 ? 300 : 48,
+        width: isExpanded || searchQuery.length > 0 ? 360 : 48,
         borderRadius: isExpanded || searchQuery.length > 0 ? 8 : 24
       }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}

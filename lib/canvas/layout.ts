@@ -14,10 +14,10 @@ export function getLayoutedElements(
 
   dagreGraph.setGraph({ 
     rankdir: direction, 
-    nodesep: 150, 
-    ranksep: 250,
-    edgesep: 80,
-    ranker: 'tight-tree'
+    nodesep: 200, 
+    ranksep: 350,
+    edgesep: 100,
+    ranker: 'network-simplex' // Puts heavily relied-upon nodes at the top
   });
 
   const nodes = modules.map((module) => ({

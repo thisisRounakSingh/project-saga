@@ -15,8 +15,7 @@ export function RepoContainer() {
         className="p-2 border-[3px] border-border hover:bg-inverted-bg hover:text-inverted-fg transition-colors flex items-center justify-center bg-background text-foreground group relative"
         title="Go to Home"
       >
-        <Menu className="w-5 h-5 group-hover:hidden" />
-        <Home className="w-5 h-5 hidden group-hover:block" />
+        <Home className="w-5 h-5" />
       </Link>
 
       <div className="flex flex-col">

@@ -147,7 +147,7 @@ export function SteeringWheel() {
       </div>
 
       {/* Settings Control */}
-      <div className={`absolute top-2 right-2 pointer-events-none transition-opacity duration-300 z-50 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`absolute top-2 right-2 pointer-events-none transition-opacity duration-300 z-50 flex gap-1 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
          <button onPointerDown={(e) => e.stopPropagation()} onClick={(e) => { e.stopPropagation(); setShowSettings(!showSettings); }} className="pointer-events-auto p-1.5 bg-background border-[3px] border-border rounded-full hover:bg-muted/30 hover:scale-110 transition-all cursor-pointer text-muted"> <Settings size={14}/> </button>
       </div>
 

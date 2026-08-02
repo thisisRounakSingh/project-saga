@@ -56,6 +56,10 @@ body:not(.native-cursor) * {
   opacity: 0.8 !important;
 }
 
+.cinematic-mode .react-flow__node {
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
 .react-flow__attribution a {
   color: var(--muted) !important;
   text-decoration: underline;
