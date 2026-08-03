@@ -1,6 +1,6 @@
 # Saga: The Codebase You Inherited
 
-[![skills.sh](https://www.skills.sh/b/thisisRounakSingh/project-saga)](https://www.skills.sh/thisisRounakSingh/project-saga/saga)
+[![skills.sh](https://www.skills.sh/b/thisisRounakSingh/project-saga/skills)](https://www.skills.sh/thisisRounakSingh/project-saga/skills)
 
 > [!WARNING]
 > **🚧 Under Construction:** This project is still under testing and requires major improvements.
