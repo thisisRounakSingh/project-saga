@@ -41,6 +41,4 @@ yarn-error.log*
 next-env.d.ts
 
 #folders
-Project-Related-Files/*
-sample-codebase/*
 .vscode/*
