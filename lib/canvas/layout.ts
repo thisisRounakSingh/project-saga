@@ -1,10 +1,12 @@
-import dagre from '@dagrejs/dagre';
-import { ModuleNodeData, Connection } from '../saga/schema';
+import dagre from "@dagrejs/dagre";
+import { ModuleNodeData, Connection } from "../saga/schema";
+import { Node } from "@xyflow/react";
 
 export function getLayoutedElements(
   modules: ModuleNodeData[],
   connections: Connection[],
-  direction = 'TB'
+  previousNodes: Node[] = [],
+  direction = "TB",
 ) {
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -12,17 +14,17 @@ export function getLayoutedElements(
   const nodeWidth = 280;
   const nodeHeight = 120;
 
-  dagreGraph.setGraph({ 
-    rankdir: direction, 
-    nodesep: 200, 
+  dagreGraph.setGraph({
+    rankdir: direction,
+    nodesep: 200,
     ranksep: 350,
     edgesep: 100,
-    ranker: 'network-simplex' // Puts heavily relied-upon nodes at the top
+    ranker: "network-simplex", // Puts heavily relied-upon nodes at the top
   });
 
   const nodes = modules.map((module) => ({
     id: module.name,
-    type: 'moduleNode',
+    type: "moduleNode",
     data: module,
     position: { x: 0, y: 0 },
   }));
@@ -33,10 +35,11 @@ export function getLayoutedElements(
     target: conn.to,
     label: conn.kind,
     markerEnd: {
-      type: 'arrowclosed',
-      color: 'var(--foreground)'
+      type: "arrowclosed",
+      color: "var(--foreground)",
     },
-    style: { strokeWidth: 2, stroke: 'var(--foreground)' },
+    style: { strokeWidth: 2, stroke: "var(--foreground)" },
+    animated: true,
   }));
 
   nodes.forEach((node) => {
@@ -49,12 +52,28 @@ export function getLayoutedElements(
 
   dagre.layout(dagreGraph);
 
+  const prevNodeMap = new Map(previousNodes.map((n) => [n.id, n]));
+  const unassignedDeletedNodes = previousNodes.filter(
+    (n) => !nodes.find((newN) => newN.id === n.id),
+  );
+
   nodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
-    node.position = {
+    const dagrePos = {
       x: nodeWithPosition.x - nodeWidth / 2,
       y: nodeWithPosition.y - nodeHeight / 2,
     };
+
+    if (prevNodeMap.has(node.id)) {
+      node.position = prevNodeMap.get(node.id)!.position;
+    } else {
+      if (unassignedDeletedNodes.length > 0) {
+        const deleted = unassignedDeletedNodes.shift()!;
+        node.position = deleted.position;
+      } else {
+        node.position = dagrePos;
+      }
+    }
   });
 
   return { nodes, edges };

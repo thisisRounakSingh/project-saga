@@ -15,7 +15,6 @@ export function PlaybackControls() {
   const toggleCinematicMode = useSagaStore(state => state.toggleCinematicMode);
   const narrationSpeed = useSagaStore(state => state.narrationSpeed);
   const setNarrationSpeed = useSagaStore(state => state.setNarrationSpeed);
-  const isTransitioningAct = useSagaStore(state => state.isTransitioningAct);
 
   const acts = sessionData?.acts || [];
   const activeIndex = acts.findIndex(a => a.id === activeActId);
@@ -72,7 +71,7 @@ export function PlaybackControls() {
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
-    if (isPlaying && !isTransitioningAct) {
+    if (isPlaying) {
       const effectiveSpeed = isCinematicMode ? narrationSpeed + 2000 : narrationSpeed;
       interval = setInterval(() => {
         const state = useSagaStore.getState();
@@ -85,8 +84,7 @@ export function PlaybackControls() {
           state.setActiveNarrationIndex(state.activeNarrationIndex + 1);
         } else {
           if (currentActIndex < acts.length - 1) {
-            // Trigger transition state instead of switching immediately
-            state.setIsTransitioningAct(true);
+            state.setActiveActId(acts[currentActIndex + 1].id);
           } else {
             useSagaStore.getState().setIsPlaying(false);
           }
@@ -94,7 +92,7 @@ export function PlaybackControls() {
       }, effectiveSpeed);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, isCinematicMode, narrationSpeed, isTransitioningAct]);
+  }, [isPlaying, isCinematicMode, narrationSpeed]);
 
   return (
     <div className="flex items-center bg-background border-[3px] border-border shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff]">

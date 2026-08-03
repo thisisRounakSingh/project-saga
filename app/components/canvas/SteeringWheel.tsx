@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReactFlow } from '@xyflow/react';
-import { ZoomIn, ZoomOut, Move, Settings } from 'lucide-react';
+import { ZoomIn, ZoomOut, Move, Settings, Pen } from 'lucide-react';
 import { useSagaStore } from '@/store/sagaStore';
 
 export function SteeringWheel() {
@@ -13,6 +13,11 @@ export function SteeringWheel() {
   
   const joystickSpeed = useSagaStore(state => state.joystickSpeed);
   const setJoystickSpeed = useSagaStore(state => state.setJoystickSpeed);
+  
+  const isWhiteboardMode = useSagaStore(state => state.isWhiteboardMode);
+  const whiteboardColor = useSagaStore(state => state.whiteboardColor);
+  const setIsWhiteboardMode = useSagaStore(state => state.setIsWhiteboardMode);
+  const setWhiteboardColor = useSagaStore(state => state.setWhiteboardColor);
 
   // Joystick state
   const rAF = useRef<number | null>(null);
@@ -146,10 +151,33 @@ export function SteeringWheel() {
          <Move size={14} />
       </div>
 
-      {/* Settings Control */}
+      {/* Settings & Pen Control */}
       <div className={`absolute top-2 right-2 pointer-events-none transition-opacity duration-300 z-50 flex gap-1 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
          <button onPointerDown={(e) => e.stopPropagation()} onClick={(e) => { e.stopPropagation(); setShowSettings(!showSettings); }} className="pointer-events-auto p-1.5 bg-background border-[3px] border-border rounded-full hover:bg-muted/30 hover:scale-110 transition-all cursor-pointer text-muted"> <Settings size={14}/> </button>
+         <button onPointerDown={(e) => e.stopPropagation()} onClick={(e) => { e.stopPropagation(); setIsWhiteboardMode(!isWhiteboardMode); }} className={`pointer-events-auto p-1.5 border-[3px] border-border rounded-full hover:scale-110 transition-all cursor-pointer ${isWhiteboardMode ? 'bg-accent text-white' : 'bg-background hover:bg-muted/30 text-muted'}`}> <Pen size={14}/> </button>
       </div>
+
+      {/* Whiteboard Colors Popup */}
+      <AnimatePresence>
+        {isWhiteboardMode && isHovered && (
+          <motion.div 
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 10 }}
+            className="absolute top-2 left-full ml-2 flex flex-col gap-1 p-1.5 bg-background border-[3px] border-border rounded-full shadow-[2px_2px_0_var(--color-border)] dark:shadow-[2px_2px_0_#fff] pointer-events-auto z-50"
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            {['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#000000', '#ffffff'].map(c => (
+              <button 
+                key={c} 
+                onClick={(e) => { e.stopPropagation(); setWhiteboardColor(c); }} 
+                className={`w-5 h-5 rounded-full border-2 transition-all ${whiteboardColor === c ? 'border-foreground scale-110 shadow-sm' : 'border-border/30 hover:scale-105'}`} 
+                style={{ backgroundColor: c }} 
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Zoom Controls */}
       <div className={`absolute inset-0 rounded-full flex justify-between items-center px-4 pointer-events-none transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
