@@ -21,7 +21,8 @@ type DialogState =
   | "IMPORT"
   | "CONNECTING"
   | "CLONE_PROMPT"
-  | "CLONING";
+  | "CLONING"
+  | "NON_LOCALHOST";
 
 export function LoadSagaDialog({
   isOpen,
@@ -51,6 +52,15 @@ export function LoadSagaDialog({
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
+        if (
+          typeof window !== "undefined" &&
+          window.location.hostname !== "localhost" &&
+          window.location.hostname !== "127.0.0.1"
+        ) {
+          setDialogState("NON_LOCALHOST");
+          return;
+        }
+
         if (forceCloneSessionId) {
           const session = useMemoryStore
             .getState()
@@ -192,6 +202,7 @@ export function LoadSagaDialog({
           <h2 className="font-black uppercase tracking-widest text-sm flex items-center gap-2">
             {dialogState === "LIST" && "Memory: Saved Sessions"}
             {dialogState === "IMPORT" && "Import .saga.json"}
+            {dialogState === "NON_LOCALHOST" && "Local UI Required"}
             {(dialogState === "CONNECTING" ||
               dialogState === "CLONE_PROMPT" ||
               dialogState === "CLONING") &&
@@ -208,6 +219,45 @@ export function LoadSagaDialog({
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-6 md:p-8 relative">
           <AnimatePresence mode="wait">
+            {dialogState === "NON_LOCALHOST" && (
+              <motion.div
+                key="non-localhost"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="flex flex-col gap-6 items-center text-center py-6"
+              >
+                <div className="w-16 h-16 bg-accent flex items-center justify-center text-white shadow-[4px_4px_0_var(--color-border)] mb-2">
+                  <Terminal className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-black text-xl uppercase tracking-wider mb-2">
+                    Clone the UI Locally
+                  </h3>
+                  <p className="text-sm font-medium opacity-80 leading-relaxed max-w-md">
+                    You&apos;re viewing the hosted version. To interact with your local Codex model and open .saga.json files, please run Project Saga locally.
+                  </p>
+                </div>
+
+                <div className="bg-inverted-bg text-inverted-fg p-4 text-xs font-mono text-left w-full border-[3px] border-border shadow-[4px_4px_0_var(--color-accent)] leading-loose">
+                  <span className="text-muted"># Install the skill to your Codex</span><br/>
+                  npx skills add thisisRounakSingh/project-saga<br/><br/>
+                  <span className="text-muted"># Run it on any repository</span><br/>
+                  codex &quot;$saga use the skill to explain me this repo...&quot;
+                </div>
+
+                <button
+                  onClick={() => {
+                    onClose();
+                    router.push("/learn");
+                  }}
+                  className="w-full bg-background border-[3px] border-border py-4 font-black uppercase tracking-widest text-sm shadow-[4px_4px_0_var(--color-accent)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_var(--color-accent)] transition-all"
+                >
+                  Learn More &rarr;
+                </button>
+              </motion.div>
+            )}
+
             {dialogState === "LIST" && (
               <motion.div
                 key="list"
