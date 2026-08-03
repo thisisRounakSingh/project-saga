@@ -3,19 +3,9 @@ import { CursorSwitcher } from "./components/CursorSwitcher";
 import { AsciiHero } from "./components/AsciiHero";
 import { FooterName } from "./components/FooterName";
 import { LoadSagaButton } from "./components/chrome/LoadSagaButton";
-import { SkillButton } from "./components/chrome/SkillButton";
-import fs from "fs";
-import path from "path";
+import Link from "next/link";
 
 export default function Home() {
-  let skillContent = "SKILL.md not found.";
-  try {
-    const skillPath = path.join(process.cwd(), "codex-skill", "SKILL.md");
-    skillContent = fs.readFileSync(skillPath, "utf-8");
-  } catch (e) {
-    console.error("Could not load SKILL.md", e);
-  }
-
   return (
     <div className="min-h-screen bg-background text-foreground font-mono selection:bg-accent selection:text-white">
       {/* Mobile "Store Closed" View */}
@@ -51,6 +41,12 @@ export default function Home() {
             <span className="hidden md:inline-block text-xs uppercase tracking-widest font-semibold opacity-80">
               THE CODEBASE YOU INHERITED
             </span>
+            <Link
+              href="/learn"
+              className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:text-accent transition-colors ml-4 border-l-[3px] border-border pl-4"
+            >
+              LEARN
+            </Link>
           </div>
           <div className="flex items-center gap-4 text-sm font-bold tracking-widest uppercase">
             <LoadSagaButton className="bg-inverted-bg text-inverted-fg px-4 py-1 text-xs border-[3px] border-border hover:opacity-80 transition-opacity" />
@@ -94,7 +90,14 @@ export default function Home() {
 
                 <div className="flex flex-wrap items-center gap-4 mt-auto">
                   <LoadSagaButton className="bg-inverted-bg text-inverted-fg px-8 py-4 text-sm font-bold tracking-widest uppercase border-[3px] border-border shadow-[4px_4px_0_var(--color-accent)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_var(--color-accent)] transition-all" />
-                  <SkillButton skillContent={skillContent} />
+                  <a
+                    href="https://skills.sh/thisisRounakSingh/project-saga/saga"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-background text-foreground px-8 py-4 text-sm font-bold tracking-widest uppercase border-[3px] border-border border-dashed hover:bg-border hover:text-background dark:hover:text-background transition-colors"
+                  >
+                    SKILL.MD
+                  </a>
                 </div>
 
                 {/* Carousel */}
