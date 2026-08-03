@@ -1,0 +1,8 @@
+{
+  "name": "project-saga",
+  "version": "1.0.0",
+  "description": "Ecosystem skills for the Saga custom workspace.",
+  "skills": [
+    "./codex-skill"
+  ]
+}

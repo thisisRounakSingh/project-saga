@@ -1,6 +1,6 @@
 # Saga: The Codebase You Inherited
 
-[![skills.sh](https://skills.sh/b/thisisRounakSingh/project-saga/codex-skill)](https://skills.sh/thisisRounakSingh/project-saga/codex-skill)
+[![skills.sh](https://skills.sh/b/thisisRounakSingh/project-saga)](https://skills.sh/thisisRounakSingh/project-saga)
 
 > [!WARNING]
 > **🚧 Under Construction:** This project is still under testing and requires major improvements.
