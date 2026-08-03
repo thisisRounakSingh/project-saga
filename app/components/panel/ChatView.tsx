@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { useMemoryStore } from "@/store/memoryStore";
 import { useSagaStore } from "@/store/sagaStore";
 import {
   X,
@@ -11,10 +13,18 @@ import {
   Plus,
   Trash2,
   RefreshCcw,
+  Info,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function ChatView() {
+  const params = useParams();
+  const sessionId = params.sessionId as string;
+  const currentSession = useMemoryStore((state) =>
+    state.savedSessions.find((s) => s.id === sessionId),
+  );
+  const isViewOnly = currentSession?.isViewOnly || false;
+
   const chatTabs = useSagaStore((state) => state.chatTabs);
   const activeChatTabId = useSagaStore((state) => state.activeChatTabId);
   const createChatTab = useSagaStore((state) => state.createChatTab);
@@ -69,10 +79,7 @@ export function ChatView() {
 
   return (
     <div className="absolute inset-0 flex flex-col bg-background">
-      {/* Mock Session Indicator */}
-      <div className="shrink-0 bg-muted/20 text-muted text-[10px] uppercase tracking-widest font-bold text-center py-1 border-b-[3px] border-border border-dashed">
-        Mock Session - Local Data Only
-      </div>
+      {/* Mock Session Indicator removed */}
 
       {/* Chat Tabs Bar */}
       <div className="shrink-0 flex items-center justify-between bg-muted/10 border-b-[3px] border-border p-2 gap-2 relative">
@@ -224,7 +231,16 @@ export function ChatView() {
       </div>
 
       {/* Input Area */}
-      <div className="shrink-0 border-t-[3px] border-border bg-background p-4">
+      <div className="shrink-0 border-t-[3px] border-border bg-background p-4 relative">
+        {isViewOnly && (
+          <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px] z-10 flex items-center justify-center border-t-[3px] border-border">
+            <div className="flex items-center gap-2 text-muted font-bold tracking-widest uppercase text-xs">
+              <Info size={14} />
+              Chat Disabled in View-Only Mode
+            </div>
+          </div>
+        )}
+        
         {/* Context Tray (Pending Quotes + Pinned Nodes) */}
         <AnimatePresence>
           {(pendingChatContext.length > 0 || pinnedNodeIds.length > 0) && (
@@ -282,12 +298,13 @@ export function ChatView() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question..."
-            className="flex-1 bg-muted/10 border-[3px] border-border p-3 text-sm focus:outline-none focus:border-accent transition-colors"
+            placeholder={isViewOnly ? "Chat disabled..." : "Ask a question..."}
+            disabled={isViewOnly}
+            className="flex-1 bg-muted/10 border-[3px] border-border p-3 text-sm focus:outline-none focus:border-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           />
           <button
             type="submit"
-            disabled={!input.trim() && pendingChatContext.length === 0}
+            disabled={isViewOnly || (!input.trim() && pendingChatContext.length === 0)}
             className="shrink-0 bg-accent text-white border-[3px] border-border p-3 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_var(--color-border)] dark:hover:shadow-[2px_2px_0_#fff] disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none transition-all"
           >
             <Send size={18} />

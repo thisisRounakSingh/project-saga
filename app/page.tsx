@@ -3,8 +3,19 @@ import { CursorSwitcher } from "./components/CursorSwitcher";
 import { AsciiHero } from "./components/AsciiHero";
 import { FooterName } from "./components/FooterName";
 import { LoadSagaButton } from "./components/chrome/LoadSagaButton";
+import { SkillButton } from "./components/chrome/SkillButton";
+import fs from "fs";
+import path from "path";
 
 export default function Home() {
+  let skillContent = "SKILL.md not found.";
+  try {
+    const skillPath = path.join(process.cwd(), "codex-skill", "SKILL.md");
+    skillContent = fs.readFileSync(skillPath, "utf-8");
+  } catch (e) {
+    console.error("Could not load SKILL.md", e);
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground font-mono selection:bg-accent selection:text-white">
       {/* Mobile "Store Closed" View */}
@@ -83,9 +94,7 @@ export default function Home() {
 
                 <div className="flex flex-wrap items-center gap-4 mt-auto">
                   <LoadSagaButton className="bg-inverted-bg text-inverted-fg px-8 py-4 text-sm font-bold tracking-widest uppercase border-[3px] border-border shadow-[4px_4px_0_var(--color-accent)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_var(--color-accent)] transition-all" />
-                  <button className="bg-background text-foreground px-8 py-4 text-sm font-bold tracking-widest uppercase border-[3px] border-border border-dashed hover:bg-border hover:text-background dark:hover:text-background transition-colors">
-                    SKILL.MD
-                  </button>
+                  <SkillButton skillContent={skillContent} />
                 </div>
 
                 {/* Carousel */}

@@ -39,6 +39,18 @@ export default function SagaClientView({ session }: { session: SagaSession }) {
       localPath: resolvedLocalPath,
       isViewOnly: !resolvedLocalPath,
     });
+
+    if (resolvedLocalPath) {
+      fetch(`/api/local/verify-path?path=${encodeURIComponent(resolvedLocalPath)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.exists) {
+            console.warn(`[saga] localPath ${resolvedLocalPath} no longer exists. Reverting to view-only mode.`);
+            useMemoryStore.getState().updateSessionMode(sessionId, true, null);
+          }
+        })
+        .catch(err => console.error("Error verifying local path:", err));
+    }
   }, [session, setSessionData]);
 
   if (!isLoaded) return <div className="p-8">Loading Session...</div>;

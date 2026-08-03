@@ -27,7 +27,7 @@ const POLL_INTERVAL_MS = positiveNumber('SAGA_POLL_INTERVAL_MS', 1500);
 // The Codex CLI's read-only sandbox also disables network. That prevents the
 // CLI from reaching its model service, leaving the browser question pending.
 // Use the noninteractive automation mode and enforce a short bridge timeout.
-const CODEX_TIMEOUT_MS = positiveNumber('SAGA_CODEX_TIMEOUT_MS', 60_000);
+const CODEX_TIMEOUT_MS = positiveNumber('SAGA_CODEX_TIMEOUT_MS', 120_000);
 const CODEX_BIN = process.env.SAGA_CODEX_BIN || 'codex';
 const SAGA_FILE = path.resolve(process.argv[2] || 'project.saga.json');
 const WORKSPACE_DIR = path.resolve(process.env.SAGA_WORKSPACE_DIR || process.cwd());
@@ -42,7 +42,7 @@ function sleep(ms) {
 
 function runProcess(command, args, options = {}) {
   return new Promise((resolve, reject) => {
-    execFile(command, args, options, (error, stdout, stderr) => {
+    const child = execFile(command, args, options, (error, stdout, stderr) => {
       if (error) {
         error.detail = [error.message, stderr].filter(Boolean).join('\n').trim();
         reject(error);
@@ -50,6 +50,7 @@ function runProcess(command, args, options = {}) {
       }
       resolve({ stdout, stderr });
     });
+    if (child.stdin) child.stdin.end();
   });
 }
 
@@ -218,6 +219,9 @@ function workerFailureMessage(error) {
   }
   if (error?.code === 'SAGA_OUTPUT_MISSING') {
     return 'Saga local Codex worker finished without an answer. Check bridge terminal, then resend the question.';
+  }
+  if (error?.detail && (/rate limit/i.test(error.detail) || /usage limit/i.test(error.detail) || /quota/i.test(error.detail))) {
+    return 'Saga local Codex worker hit a usage limit or quota. Please check your account limits.';
   }
   if (error?.killed || error?.signal === 'SIGTERM' || error?.code === 'ETIMEDOUT') {
     return 'Saga local Codex worker timed out. Check bridge terminal, then resend the question.';

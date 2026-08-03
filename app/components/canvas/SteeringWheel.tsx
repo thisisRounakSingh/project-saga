@@ -180,9 +180,9 @@ export function SteeringWheel() {
           <Move size={14} />
         </div>
 
-        {/* Settings & Pen Control */}
+        {/* Settings Control */}
         <div
-          className={`absolute top-2 right-2 pointer-events-none transition-opacity duration-300 z-50 flex gap-1 ${isHovered ? "opacity-100" : "opacity-0"}`}
+          className={`absolute top-3 left-4 pointer-events-none transition-opacity duration-300 z-50 ${isHovered ? "opacity-100" : "opacity-0"}`}
         >
           <button
             onPointerDown={(e) => e.stopPropagation()}
@@ -195,6 +195,12 @@ export function SteeringWheel() {
             {" "}
             <Settings size={14} />{" "}
           </button>
+        </div>
+
+        {/* Pen Control */}
+        <div
+          className={`absolute top-3 right-4 pointer-events-none transition-opacity duration-300 z-50 ${isHovered ? "opacity-100" : "opacity-0"}`}
+        >
           <button
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
@@ -320,7 +326,7 @@ export function SteeringWheel() {
       </motion.div>
 
       {currentSession?.isViewOnly && (
-        <div className="absolute z-50 bottom-27.5 left-8">
+        <div className="absolute z-50 bottom-8 left-1/2 -translate-x-1/2">
           <button
             onClick={() => setIsCloneDialogOpen(true)}
             title="Switch to Repo Mode (Requires Cloning)"

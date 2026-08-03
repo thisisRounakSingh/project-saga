@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -89,24 +90,53 @@ export function LoadSagaDialog({
     }, 2500);
   };
 
-  const handleImport = () => {
-    // Mock parsing a .saga.json
-    addOrUpdateSession({
-      id: "collegework-java",
-      projectName: "collegework-java",
-      lastOpened: Date.now() - 1000 * 60 * 60 * 24, // 1 day ago
-      localPath: "~/Workspace/collegework-java",
-      isViewOnly: false,
-    });
-    const mockSession: SavedSession = {
-      id: "new-project",
-      projectName: "new-project",
-      lastOpened: Date.now(),
-      localPath: null,
-      isViewOnly: false,
+  const handleImportClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = async (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (!file) return;
+
+      setDialogState("CONNECTING");
+
+      try {
+        const text = await file.text();
+        const response = await fetch("/api/sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: text,
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to upload session");
+        }
+
+        const { sessionId } = await response.json();
+        const parsed = JSON.parse(text);
+
+        const newSession: SavedSession = {
+          id: sessionId,
+          projectName: parsed.repo?.name || "Imported Project",
+          lastOpened: Date.now(),
+          localPath: null,
+          isViewOnly: true,
+        };
+
+        addOrUpdateSession(newSession);
+
+        setTimeout(() => {
+          router.push(`/s/${sessionId}`);
+          onClose();
+        }, 1500);
+      } catch (err) {
+        console.error("Error importing saga:", err);
+        setDialogState("IMPORT");
+        alert("Failed to parse or upload .saga.json");
+      }
     };
-    addOrUpdateSession(mockSession);
-    startCodexConnection(mockSession);
+    input.click();
   };
 
   const handleSkipClone = () => {
@@ -144,8 +174,8 @@ export function LoadSagaDialog({
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center pointer-events-auto">
+  const dialogContent = (
+    <div className="fixed inset-0 z-9999 flex items-center justify-center pointer-events-auto">
       <div
         className="absolute inset-0 bg-background/80 backdrop-blur-sm"
         onClick={onClose}
@@ -261,7 +291,7 @@ export function LoadSagaDialog({
               >
                 <div
                   className="border-[3px] border-dashed border-border bg-muted/5 p-12 flex flex-col items-center justify-center text-center group hover:bg-muted/10 transition-colors cursor-pointer"
-                  onClick={handleImport}
+                  onClick={handleImportClick}
                 >
                   <div className="w-16 h-16 rounded-full bg-accent text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff]">
                     <Upload size={24} />
@@ -315,19 +345,64 @@ export function LoadSagaDialog({
                   <Terminal className="shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-black text-sm uppercase tracking-widest mb-1">
-                      Local Repository Missing
+                      Codex Bridge Offline
                     </h4>
-                    <p className="text-sm">
-                      Codex reports that this repository does not exist on your
-                      hardware. For updated context and full integration, you
-                      need to clone it locally.
+                    <p className="text-sm font-medium leading-relaxed">
+                      Saga is in View-Only mode. To activate Chat and full
+                      features, you must manually clone the repository and start
+                      the Codex bridge:
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3 text-sm">
+                  <div className="flex gap-4 items-start border-l-2 border-accent pl-4">
+                    <div className="font-black text-accent mt-0.5">1</div>
+                    <div className="flex flex-col gap-1 w-full">
+                      <span className="font-bold uppercase tracking-widest text-xs">
+                        Clone the Repository
+                      </span>
+                      <code className="bg-muted/20 border border-border p-2 block font-mono text-xs overflow-x-auto text-foreground whitespace-pre">
+                        git clone &lt;repository-url&gt;
+                      </code>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 items-start border-l-2 border-accent pl-4">
+                    <div className="font-black text-accent mt-0.5">2</div>
+                    <div className="flex flex-col gap-1 w-full">
+                      <span className="font-bold uppercase tracking-widest text-xs">
+                        Start Codex
+                      </span>
+                      <code className="bg-muted/20 border border-border p-2 block font-mono text-xs text-foreground whitespace-pre">
+                        cd &lt;repository-folder&gt;{"\n"}codex
+                      </code>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 items-start border-l-2 border-accent pl-4">
+                    <div className="font-black text-accent mt-0.5">3</div>
+                    <div className="flex flex-col gap-1 w-full">
+                      <span className="font-bold uppercase tracking-widest text-xs">
+                        Activate Bridge
+                      </span>
+                      <span className="text-muted-foreground text-xs leading-relaxed">
+                        Ask Codex this exact phrase in the terminal to connect:
+                      </span>
+                      <code className="bg-muted/20 border border-border p-2 block font-mono text-xs text-foreground whitespace-pre">
+                        Activate the bridge for{" "}
+                        {typeof window !== "undefined"
+                          ? window.location.origin
+                          : "http://localhost:3000"}
+                        /s/{selectedSession?.id}
+                      </code>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-muted">
-                    Clone Destination Path
+                    Confirm Local Clone Path
                   </label>
                   <div className="flex items-center border-[3px] border-border bg-background px-3 py-2 focus-within:border-accent focus-within:shadow-[4px_4px_0_var(--color-accent)] transition-all">
                     <FolderGit2 size={16} className="text-muted mr-3" />
@@ -342,17 +417,17 @@ export function LoadSagaDialog({
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                <div className="flex flex-col sm:flex-row gap-4 mt-6">
                   <button
                     onClick={handleClone}
                     disabled={!localPathInput.trim()}
-                    className="flex-1 bg-accent text-white px-6 py-3 text-sm font-bold tracking-widest uppercase border-[3px] border-border shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 bg-accent text-white px-4 py-3 text-sm font-bold tracking-widest uppercase border-[3px] border-border shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Clone Repo
+                    I Have Activated the Bridge
                   </button>
                   <button
                     onClick={handleSkipClone}
-                    className="flex-1 bg-background text-foreground px-6 py-3 text-sm font-bold tracking-widest uppercase border-[3px] border-border border-dashed hover:bg-muted/10 transition-colors"
+                    className="bg-background text-foreground px-6 py-3 text-sm font-bold tracking-widest uppercase border-[3px] border-border border-dashed hover:bg-muted/10 transition-colors"
                   >
                     Skip (View-Only)
                   </button>
@@ -395,4 +470,8 @@ export function LoadSagaDialog({
       </motion.div>
     </div>
   );
+
+  return typeof document !== "undefined"
+    ? createPortal(dialogContent, document.body)
+    : dialogContent;
 }
