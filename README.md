@@ -20,9 +20,15 @@ To test the Saga skill in your desired repository, follow these step-by-step ins
 
 You can install this skill in two ways:
 
-#### Option A: Install via skills.sh (Recommended)
+#### Option A: Install via skills.sh CLI (Recommended)
 
-Visit [skills.sh/thisisRounakSingh/project-saga/saga](https://skills.sh/thisisRounakSingh/project-saga/saga) and follow the installation instructions provided there.
+Run the following command in the root of your target repository:
+
+```bash
+npx skills add thisisRounakSingh/project-saga
+```
+
+*(You can also visit [skills.sh/thisisRounakSingh/project-saga](https://skills.sh/thisisRounakSingh/project-saga) for more details once the repository is fully indexed by the registry).*
 
 #### Option B: Manual Installation
 
