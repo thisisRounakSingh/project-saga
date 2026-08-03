@@ -158,10 +158,7 @@ treat a failure as a bug in the file, not in the validator.
 node scripts/saga-launch.js project.saga.json
 ```
 
-**This talks to your local dev server by default** — the project isn't
-deployed yet. `SAGA_BASE_URL` defaults to `http://localhost:3000`; make sure
-the frontend's `npm run dev` is actually running first (the bridge will wait
-and remind you if it isn't, rather than failing outright). The launcher
+**This talks to the deployed server by default**. `SAGA_BASE_URL` defaults to `https://project-saga-snowy.vercel.app/`. The launcher
 checks the local Codex executable and login before it uploads the session,
 then prints the session URL. It does not control your existing Codex chat:
 each UI question runs in a separate, ephemeral `codex exec` worker rooted at
@@ -169,9 +166,8 @@ the analysed repository. Read
 `references/bridge-protocol.md` for the full endpoint contract, why the
 network-isolated read-only sandbox cannot reach the model service, and
 troubleshooting if the
-bridge or live chat misbehaves. When the frontend is eventually deployed,
-the only change is setting `SAGA_BASE_URL` to the deployed URL — nothing
-else in this workflow changes.
+bridge or live chat misbehaves. To connect to a local dev server instead,
+set `SAGA_BASE_URL` to `http://localhost:3000`.
 
 Set `SAGA_OPEN_BROWSER=1` only when the process may open a local browser.
 Set `SAGA_WORKSPACE_DIR` when the analysed repository differs from the

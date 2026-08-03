@@ -22,7 +22,7 @@ function positiveNumber(name, fallback) {
   return value;
 }
 
-const BASE_URL = (process.env.SAGA_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
+const BASE_URL = (process.env.SAGA_BASE_URL || 'https://project-saga-snowy.vercel.app').replace(/\/$/, '');
 const POLL_INTERVAL_MS = positiveNumber('SAGA_POLL_INTERVAL_MS', 1500);
 // The Codex CLI's read-only sandbox also disables network. That prevents the
 // CLI from reaching its model service, leaving the browser question pending.

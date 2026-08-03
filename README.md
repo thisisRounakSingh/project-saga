@@ -1,5 +1,7 @@
 # Saga: The Codebase You Inherited
 
+[![skills.sh](https://skills.sh/b/thisisRounakSingh/project-saga/codex-skill)](https://skills.sh/thisisRounakSingh/project-saga/codex-skill)
+
 > [!WARNING]
 > **🚧 Under Construction:** This project is still under testing and requires major improvements.
 
@@ -16,28 +18,37 @@ To test the Saga skill in your desired repository, follow these step-by-step ins
 
 ### Step 1: Install the Skill
 
+You can install this skill in two ways:
+
+#### Option A: Install via skills.sh (Recommended)
+
+Visit [skills.sh/thisisRounakSingh/project-saga/codex-skill](https://skills.sh/thisisRounakSingh/project-saga/codex-skill) and follow the installation instructions provided there.
+
+#### Option B: Manual Installation
+
 1. Navigate to the repository where you want to run Saga.
 2. Create an agent skills directory by running: `mkdir -p .agents/skills`
 3. Copy the `codex-skill` folder from this (Saga) repository into your target repository's `.agents/skills` directory, renaming it to `saga`.
    For example: `cp -r /path/to/project-saga/codex-skill .agents/skills/saga`
 
-### Step 2: Start the Saga UI
+### Step 2: Trigger the Skill with Codex
 
-1. In a separate terminal, navigate back to your **Saga** repository (`project-saga`).
-2. Start the local UI server by running: `npm run dev`
-3. Ensure the UI is running (typically on `http://localhost:3000`).
-
-### Step 3: Trigger the Skill with Codex
+By default, the skill connects to the deployed Saga UI at `https://project-saga-snowy.vercel.app/`.
 
 1. Open your target repository in your IDE where Codex is running.
 2. Prompt Codex with an instruction similar to this:
    > "Please use the Saga skill to explain this repository. Make sure to explicitly turn on the browser and inform me when it is ready."
-3. Codex will automatically discover the local skill in `.agents/skills/saga` and execute the background scripts (parsing the git history and clustering commits).
-4. Codex will then communicate with your locally running Saga UI via a bridge to create a new session and will open the visualization in your browser.
+3. Codex will automatically discover the skill and execute the background scripts (parsing the git history and clustering commits).
+4. Codex will then communicate with the Saga UI via a bridge to create a new session and will open the visualization in your browser.
 
-### Step 4: Explore
+*(Optional)* If you wish to run the UI locally instead:
 
-1. Codex should inform you when the session is successfully created and provide the local URL (e.g., `http://localhost:3000/s/<session-id>`).
+1. Start the local UI server from the Saga repository: `npm run dev`
+2. Set the environment variable `SAGA_BASE_URL=http://localhost:3000` when running the skill.
+
+### Step 3: Explore
+
+1. Codex should inform you when the session is successfully created and provide the session URL (e.g., `https://project-saga-snowy.vercel.app/s/<session-id>`).
 2. Open the URL to view the timeline.
 3. Press **Play** to watch the architectural changes morph over time, and use the side panel to chat with Codex about specific historical contexts or decisions.
 

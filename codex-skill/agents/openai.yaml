@@ -22,10 +22,9 @@ env:
   SAGA_BASE_URL:
     description: >
       Base URL of the Saga frontend/relay that scripts/saga-launch.js
-      uploads to and polls. Defaults to the local dev server. Point this at
-      the deployed URL once the frontend is shipped — no code change needed,
-      just this value.
-    default: "http://localhost:3000"
+      uploads to and polls. Defaults to the deployed URL. Point this at
+      the local dev server to test locally.
+    default: "https://project-saga-snowy.vercel.app"
   SAGA_CODEX_BIN:
     description: Override if `codex` isn't the right binary name/path on this machine.
     default: "codex"

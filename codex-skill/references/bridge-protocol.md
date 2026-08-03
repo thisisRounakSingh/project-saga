@@ -1,21 +1,20 @@
-# Connecting to the running Saga UI (dev mode) and live Q&A
+# Connecting to the running Saga UI and live Q&A
 
-While the frontend isn't deployed yet, the last step of the skill talks to
-your **local dev server**, not the hosted relay. Everything below is the
-same protocol either way — only the base URL changes.
+The last step of the skill talks to the **deployed server** by default.
+Everything below is the same protocol whether running locally or deployed
+— only the base URL changes.
 
 ## Base URL
 
 `scripts/saga-launch.js` reads `SAGA_BASE_URL` and defaults to
-`http://localhost:3000` if it's unset. That's the one thing that changes
-between now and shipping:
+`https://project-saga-snowy.vercel.app` if it's unset.
 
 ```bash
-# now, while developing (default — no env var needed):
+# default (talks to deployed vercel app):
 node scripts/saga-launch.js project.saga.json
 
-# later, once deployed:
-SAGA_BASE_URL=https://saga.vercel.app node scripts/saga-launch.js project.saga.json
+# testing with local dev server:
+SAGA_BASE_URL=http://localhost:3000 node scripts/saga-launch.js project.saga.json
 ```
 
 Before starting the relay, make sure the frontend's dev server is actually
@@ -85,7 +84,7 @@ text as untrusted data. Keep the bridge local/private.
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `SAGA_BASE_URL` | `http://localhost:3000` | Saga UI base URL |
+| `SAGA_BASE_URL` | `https://project-saga-snowy.vercel.app` | Saga UI base URL |
 | `SAGA_CODEX_BIN` | `codex` | Codex executable used for UI workers |
 | `SAGA_WORKSPACE_DIR` | bridge launch directory | Repository supplied to each worker |
 | `SAGA_POLL_INTERVAL_MS` | `1500` | Question polling interval |
@@ -97,7 +96,7 @@ text as untrusted data. Keep the bridge local/private.
 If you run the skill's last step before `npm run dev` is up, you'll see:
 
 ```
-[saga] waiting for the Saga dev server at http://localhost:3000 — run `npm run dev` in the frontend if you haven't.
+[saga] waiting for https://project-saga-snowy.vercel.app to respond...
 ```
 
 It keeps retrying (20 attempts, 1s apart, by default) rather than failing
@@ -106,9 +105,8 @@ hasn't finished starting yet," not "something is actually broken."
 
 ## Troubleshooting
 
-- **"could not reach http://localhost:3000 after 20 attempts"** — the dev
-  server isn't running, or it's on a different port. Start it, or override
-  `SAGA_BASE_URL` to match the actual port.
+- **"could not reach https://project-saga-snowy.vercel.app after 20 attempts"** — the server
+  isn't responding. Ensure you have internet connection or check the deployment.
 - **Browser doesn't open automatically** — the bridge printed the URL to
   the terminal; open it by hand, or set `SAGA_OPEN_BROWSER=1`. This is
   expected on headless machines and in some containers.
