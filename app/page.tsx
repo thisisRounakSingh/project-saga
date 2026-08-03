@@ -185,7 +185,7 @@ export default function Home() {
                   <h3 className="text-2xl font-black mb-4">{step}</h3>
                   <p className="text-sm font-medium opacity-80">
                     {idx === 0 &&
-                      "code-oss. atom-shell in commit #1, Electron by commit #4000. Nobody wrote it down."}
+                      "collegework-java. Assignment01 in commit #1, lab test by commit #25. Nobody wrote it down."}
                     {idx === 1 &&
                       "A local skill walks git log, clusters commits into acts, and diffs the module graph between them."}
                     {idx === 2 &&
@@ -219,7 +219,7 @@ export default function Home() {
             <div className="p-8 lg:p-12 flex-1 border-t-[3px] lg:border-t-0 lg:border-l-[3px] border-border flex items-center justify-center">
               <div className="w-full h-full border border-muted/30 p-6 font-mono text-xs whitespace-pre overflow-x-auto">
                 {`{
-  "project": "code-oss",
+  "project": "project-saga",
   "versions": [{
     "id": "v2",
     "label": "1.25 LSP",

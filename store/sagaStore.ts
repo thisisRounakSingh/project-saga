@@ -284,12 +284,13 @@ export const useSagaStore = create<SagaStoreState>((set) => ({
           : tab,
       ),
     })),
-  submitDirectQuestion: (text) => {
+  submitDirectQuestion: async (text) => {
     // Retrieve current state to push message
     const state = useSagaStore.getState();
     const activeTab = state.chatTabs.find(
       (t) => t.id === state.activeChatTabId,
     );
+    
     // Prevent exact duplicate questions if last message is identical
     if (activeTab && activeTab.chatHistory.length > 0) {
       const lastMsg = activeTab.chatHistory[activeTab.chatHistory.length - 1];
@@ -304,20 +305,96 @@ export const useSagaStore = create<SagaStoreState>((set) => ({
     });
     set({ isTyping: true });
 
-    setTimeout(() => {
-      const currentState = useSagaStore.getState();
-      let aiResponseText =
-        "I see. Let's look closely at how that impacts the architecture.";
-      if (text.includes("file")) {
-        aiResponseText = `Here's a breakdown of the file(s) you asked about. It handles core logic for its designated module and integrates with the wider system.`;
+    // Extract sessionId from URL (e.g. /s/vscode-demo)
+    const urlParts = typeof window !== "undefined" ? window.location.pathname.split("/s/") : [];
+    const sessionId = urlParts.length > 1 ? urlParts[1].split("/")[0] : null;
+
+    if (!sessionId) {
+      console.error("Could not determine session ID from URL");
+      set({ isTyping: false });
+      return;
+    }
+
+    try {
+      // 1. Submit the question to the API
+      const askRes = await fetch(`/api/sessions/${sessionId}/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: text,
+          context: {
+            quotedNarration: activeTab?.pendingChatContext.map((c) => ({
+              actId: c.actId,
+              text: c.text,
+            })) || [],
+            pinnedFiles: state.pinnedNodeIds,
+            selectedNodeIds: state.selectedNodeIds,
+          },
+          actId: state.activeActId,
+        }),
+      });
+
+      if (!askRes.ok) {
+        throw new Error(`Failed to submit question: ${askRes.statusText}`);
       }
+
+      // Clear pending context after submission
+      state.clearPendingChatContext();
+
+      const { questionId } = await askRes.json();
+
+      // 2. Poll for the answer
+      const pollInterval = setInterval(async () => {
+        try {
+          const ansRes = await fetch(
+            `/api/sessions/${sessionId}/answer?questionId=${questionId}`,
+          );
+          if (ansRes.ok) {
+            const data = await ansRes.json();
+            if (!data.pending) {
+              clearInterval(pollInterval);
+              
+              const currentState = useSagaStore.getState();
+              currentState.pushChatMessage({
+                id: (Date.now() + 1).toString(),
+                role: "ai",
+                text: data.answer || "I'm sorry, I couldn't generate an answer.",
+                timestamp: data.timestamp || Date.now(),
+              });
+              set({ isTyping: false });
+            }
+          }
+        } catch (pollErr) {
+          console.error("Error polling for answer:", pollErr);
+          // Keep polling, it might be a temporary network blip
+        }
+      }, 1000);
+
+      // Timeout after 5 minutes just in case
+      setTimeout(() => {
+        clearInterval(pollInterval);
+        const currentState = useSagaStore.getState();
+        if (currentState.isTyping) {
+          currentState.pushChatMessage({
+            id: (Date.now() + 2).toString(),
+            role: "ai",
+            text: "Request timed out while waiting for Codex to answer.",
+            timestamp: Date.now(),
+          });
+          set({ isTyping: false });
+        }
+      }, 300_000);
+      
+    } catch (err) {
+      console.error("Error submitting direct question:", err);
+      const currentState = useSagaStore.getState();
       currentState.pushChatMessage({
         id: (Date.now() + 1).toString(),
         role: "ai",
-        text: aiResponseText,
+        text: "Failed to submit question. Ensure the bridge is running.",
         timestamp: Date.now(),
       });
       set({ isTyping: false });
-    }, 800);
+    }
   },
 }));

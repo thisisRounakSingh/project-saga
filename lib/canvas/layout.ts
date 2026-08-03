@@ -42,6 +42,22 @@ export function getLayoutedElements(
     animated: true,
   }));
 
+  // Fallback for disconnected graphs: Phyllotaxis (sunflower) spiral layout
+  // This arranges any number of nodes uniformly around a center of mass
+  if (connections.length === 0) {
+    const c = 220; // spacing factor
+    nodes.forEach((node, i) => {
+      const n = i + 1;
+      const r = c * Math.sqrt(n);
+      const theta = n * 137.5 * (Math.PI / 180); // golden angle
+      node.position = {
+        x: r * Math.cos(theta),
+        y: r * Math.sin(theta),
+      };
+    });
+    return { nodes, edges };
+  }
+
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
   });

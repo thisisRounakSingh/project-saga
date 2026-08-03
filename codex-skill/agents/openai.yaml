@@ -1,0 +1,50 @@
+# Codex CLI-specific metadata for the Saga skill.
+# This file (not SKILL.md) is where display/invocation details that are
+# specific to Codex live, so SKILL.md itself stays portable to other agent
+# CLIs that read the same skill folder shape.
+
+name: saga
+display_name: "Saga"
+summary: "Turn a repo's commit history into a narrated, diagram-driven tour."
+
+invocation:
+  explicit_trigger: "$saga"
+  # Implicit matching lets Codex fire the skill on close paraphrases of the
+  # trigger phrase (e.g. "generate a saga for this repo") without the user
+  # typing $saga literally. Set to false to require the explicit form only —
+  # useful once the skill is doing something with real side effects (network
+  # calls, browser launches) and you'd rather it never fire by accident.
+  implicit_match: true
+
+entrypoint: SKILL.md
+
+env:
+  SAGA_BASE_URL:
+    description: >
+      Base URL of the Saga frontend/relay that scripts/saga-launch.js
+      uploads to and polls. Defaults to the local dev server. Point this at
+      the deployed URL once the frontend is shipped — no code change needed,
+      just this value.
+    default: "http://localhost:3000"
+  SAGA_CODEX_BIN:
+    description: Override if `codex` isn't the right binary name/path on this machine.
+    default: "codex"
+  SAGA_POLL_INTERVAL_MS:
+    description: How often the bridge polls for new live-chat questions.
+    default: "1500"
+  SAGA_WORKSPACE_DIR:
+    description: Repository used by isolated live-Q&A Codex workers. Defaults to launcher directory.
+  SAGA_CODEX_TIMEOUT_MS:
+    description: Maximum time in milliseconds for one live-Q&A Codex worker.
+    default: "300000"
+  SAGA_OPEN_BROWSER:
+    description: Set to "1" to let the bridge try opening the session URL in a local browser.
+    default: ""
+
+permissions:
+  # The skill needs to read repo history and write project.saga.json plus a
+  # small number of temp files (codex answer output) — never write to the
+  # rest of the repo, and never reach further than the configured base URL.
+  filesystem: read-write
+  network: outbound-only
+  shell: true

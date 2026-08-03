@@ -91,9 +91,16 @@ export function LoadSagaDialog({
 
   const handleImport = () => {
     // Mock parsing a .saga.json
+    addOrUpdateSession({
+      id: "collegework-java",
+      projectName: "collegework-java",
+      lastOpened: Date.now() - 1000 * 60 * 60 * 24, // 1 day ago
+      localPath: "~/Workspace/collegework-java",
+      isViewOnly: false,
+    });
     const mockSession: SavedSession = {
-      id: "vscode-demo", // hardcoded to match our fixture
-      projectName: "code-oss",
+      id: "new-project",
+      projectName: "new-project",
       lastOpened: Date.now(),
       localPath: null,
       isViewOnly: false,
@@ -328,7 +335,7 @@ export function LoadSagaDialog({
                       type="text"
                       value={localPathInput}
                       onChange={(e) => setLocalPathInput(e.target.value)}
-                      placeholder="e.g. ~/Workspace/code-oss"
+                      placeholder="e.g. ~/Workspace/collegework-java"
                       className="flex-1 bg-transparent border-none outline-none text-sm font-mono placeholder:text-muted/50"
                       autoFocus
                     />

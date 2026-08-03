@@ -11,6 +11,7 @@ import { DiagramCanvas } from "@/app/components/canvas/DiagramCanvas";
 import { SidePanel } from "@/app/components/panel/SidePanel";
 import { useEffect } from "react";
 import { SagaSession } from "@/lib/saga/schema";
+import { useMemoryStore } from "@/store/memoryStore";
 
 export default function SagaClientView({ session }: { session: SagaSession }) {
   const setSessionData = useSagaStore((state) => state.setSessionData);
@@ -18,6 +19,26 @@ export default function SagaClientView({ session }: { session: SagaSession }) {
 
   useEffect(() => {
     setSessionData(session);
+    
+    // Extract sessionId from URL (if we can)
+    const urlParts = typeof window !== "undefined" ? window.location.pathname.split("/s/") : [];
+    const sessionId = urlParts.length > 1 ? urlParts[1].split("/")[0] : session.repo.name;
+
+    // Check for localPath in URL query string (sent by saga-launch.js bridge)
+    const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : new URLSearchParams();
+    const localPath = urlParams.get("localPath");
+
+    // Persist this session so it shows up in the "Recent Sessions" list on home page
+    const existingSession = useMemoryStore.getState().savedSessions.find(s => s.id === sessionId);
+    const resolvedLocalPath = localPath || existingSession?.localPath || null;
+
+    useMemoryStore.getState().addOrUpdateSession({
+      id: sessionId,
+      projectName: session.repo.name,
+      lastOpened: Date.now(),
+      localPath: resolvedLocalPath,
+      isViewOnly: !resolvedLocalPath,
+    });
   }, [session, setSessionData]);
 
   if (!isLoaded) return <div className="p-8">Loading Session...</div>;

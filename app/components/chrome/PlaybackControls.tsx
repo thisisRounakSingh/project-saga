@@ -23,11 +23,25 @@ export function PlaybackControls() {
   const toggleCinematicMode = useSagaStore(
     (state) => state.toggleCinematicMode,
   );
-  const narrationSpeed = useSagaStore((state) => state.narrationSpeed);
-  const setNarrationSpeed = useSagaStore((state) => state.setNarrationSpeed);
 
   const acts = sessionData?.acts || [];
   const activeIndex = acts.findIndex((a) => a.id === activeActId);
+  const activeAct = acts[activeIndex];
+
+  const hasBusinessLogic =
+    activeAct?.modules.some((m) => {
+      const lowerPath = m.path.toLowerCase();
+      const lowerName = m.name.toLowerCase();
+      return (
+        lowerPath.includes("service") ||
+        lowerPath.includes("core") ||
+        lowerPath.includes("util") ||
+        lowerName.includes("service")
+      );
+    }) ?? false;
+
+  const narrationSpeed = useSagaStore((state) => state.narrationSpeed);
+  const setNarrationSpeed = useSagaStore((state) => state.setNarrationSpeed);
 
   const handlePrevious = () => {
     if (activeIndex > 0) {
@@ -143,10 +157,15 @@ export function PlaybackControls() {
       </button>
       <button
         title={
-          isCinematicMode ? "Disable Cinematic Mode" : "Enable Cinematic Mode"
+          !hasBusinessLogic
+            ? "No business logic found in this act"
+            : isCinematicMode
+              ? "Disable Cinematic Mode"
+              : "Enable Cinematic Mode"
         }
         onClick={toggleCinematicMode}
-        className={`p-2 transition-colors border-r-[3px] border-border ${isCinematicMode ? "bg-accent text-white hover:bg-accent/80" : "hover:bg-inverted-bg hover:text-inverted-fg"}`}
+        disabled={!hasBusinessLogic}
+        className={`p-2 transition-colors border-r-[3px] border-border ${!hasBusinessLogic ? "opacity-50 cursor-not-allowed" : isCinematicMode ? "bg-accent text-white hover:bg-accent/80" : "hover:bg-inverted-bg hover:text-inverted-fg"}`}
       >
         <Clapperboard size={16} />
       </button>

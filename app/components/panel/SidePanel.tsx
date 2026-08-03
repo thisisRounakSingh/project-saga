@@ -96,7 +96,7 @@ export function SidePanel() {
           ? { duration: 0 }
           : { type: "spring", stiffness: 300, damping: 30 }
       }
-      className="bg-background border-[3px] border-border shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff] rounded-2xl flex flex-col z-40 overflow-hidden absolute right-4 top-4 bottom-4"
+      className="bg-background border-[3px] border-border shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff] rounded-2xl flex flex-col z-60 overflow-hidden absolute right-4 top-4 bottom-4"
     >
       {/* Resizer Handle */}
       {!isDocked && !isMaximized && (
