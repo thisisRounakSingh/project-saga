@@ -1,6 +1,6 @@
 # Saga: The Codebase You Inherited
 
-[![skills.sh](https://skills.sh/b/thisisRounakSingh/project-saga)](https://skills.sh/thisisRounakSingh/project-saga)
+[![skills.sh](https://skills.sh/b/thisisRounakSingh/project-saga)](https://skills.sh/thisisRounakSingh/project-saga/saga)
 
 > [!WARNING]
 > **🚧 Under Construction:** This project is still under testing and requires major improvements.
@@ -22,14 +22,14 @@ You can install this skill in two ways:
 
 #### Option A: Install via skills.sh (Recommended)
 
-Visit [skills.sh/thisisRounakSingh/project-saga/codex-skill](https://skills.sh/thisisRounakSingh/project-saga/codex-skill) and follow the installation instructions provided there.
+Visit [skills.sh/thisisRounakSingh/project-saga/saga](https://skills.sh/thisisRounakSingh/project-saga/saga) and follow the installation instructions provided there.
 
 #### Option B: Manual Installation
 
 1. Navigate to the repository where you want to run Saga.
 2. Create an agent skills directory by running: `mkdir -p .agents/skills`
 3. Copy the `codex-skill` folder from this (Saga) repository into your target repository's `.agents/skills` directory, renaming it to `saga`.
-   For example: `cp -r /path/to/project-saga/codex-skill .agents/skills/saga`
+   For example: `cp -r /path/to/project-saga/skills/saga .agents/skills/saga`
 
 ### Step 2: Trigger the Skill with Codex
 
