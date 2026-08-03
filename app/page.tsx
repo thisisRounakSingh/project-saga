@@ -2,6 +2,7 @@ import { ThemeSwitcher } from "./components/ThemeSwitcher";
 import { CursorSwitcher } from "./components/CursorSwitcher";
 import { AsciiHero } from "./components/AsciiHero";
 import { FooterName } from "./components/FooterName";
+import { LoadSagaButton } from "./components/chrome/LoadSagaButton";
 
 export default function Home() {
   return (
@@ -41,9 +42,7 @@ export default function Home() {
             </span>
           </div>
           <div className="flex items-center gap-4 text-sm font-bold tracking-widest uppercase">
-            <button className="bg-inverted-bg text-inverted-fg px-4 py-1 text-xs border-[3px] border-border hover:opacity-80 transition-opacity">
-              LOAD.SAGA &rarr;
-            </button>
+            <LoadSagaButton className="bg-inverted-bg text-inverted-fg px-4 py-1 text-xs border-[3px] border-border hover:opacity-80 transition-opacity" />
             <CursorSwitcher />
             <ThemeSwitcher />
           </div>
@@ -83,9 +82,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4 mt-auto">
-                  <button className="bg-inverted-bg text-inverted-fg px-8 py-4 text-sm font-bold tracking-widest uppercase border-[3px] border-border shadow-[4px_4px_0_var(--color-accent)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_var(--color-accent)] transition-all">
-                    LOAD.SAGA &rarr;
-                  </button>
+                  <LoadSagaButton className="bg-inverted-bg text-inverted-fg px-8 py-4 text-sm font-bold tracking-widest uppercase border-[3px] border-border shadow-[4px_4px_0_var(--color-accent)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_var(--color-accent)] transition-all" />
                   <button className="bg-background text-foreground px-8 py-4 text-sm font-bold tracking-widest uppercase border-[3px] border-border border-dashed hover:bg-border hover:text-background dark:hover:text-background transition-colors">
                     SKILL.MD
                   </button>
@@ -94,22 +91,22 @@ export default function Home() {
                 {/* Carousel */}
                 <div className="mt-8 bg-black text-white border-[3px] border-border overflow-hidden flex py-4">
                   <div className="animate-marquee flex gap-8 px-4 text-sm font-bold tracking-widest uppercase w-max">
-                  <span>CODEX</span> <span>•</span> <span>ARCH BTW</span>{" "}
-                  <span>•</span> <span>REACT</span> <span>•</span>{" "}
-                  <span>NEXT.JS</span> <span>•</span> <span>TYPESCRIPT</span>{" "}
-                  <span>•</span> <span>RUST</span> <span>•</span>{" "}
-                  <span>C++</span> <span>•</span> <span>JS</span>{" "}
-                  <span>•</span> <span>GO</span> <span>•</span>{" "}
-                  <span>PYTHON</span> <span>•</span> <span>WASM</span>{" "}
-                  <span>•</span> <span>CODEX</span> <span>•</span>{" "}
-                  <span>ARCH BTW</span> <span>•</span> <span>REACT</span>{" "}
-                  <span>•</span> <span>NEXT.JS</span> <span>•</span>{" "}
-                  <span>TYPESCRIPT</span> <span>•</span> <span>RUST</span>{" "}
-                  <span>•</span> <span>C++</span> <span>•</span>{" "}
-                  <span>JS</span> <span>•</span> <span>GO</span>{" "}
-                  <span>•</span> <span>PYTHON</span> <span>•</span>{" "}
-                  <span>WASM</span>
-                </div>
+                    <span>CODEX</span> <span>•</span> <span>ARCH BTW</span>{" "}
+                    <span>•</span> <span>REACT</span> <span>•</span>{" "}
+                    <span>NEXT.JS</span> <span>•</span> <span>TYPESCRIPT</span>{" "}
+                    <span>•</span> <span>RUST</span> <span>•</span>{" "}
+                    <span>C++</span> <span>•</span> <span>JS</span>{" "}
+                    <span>•</span> <span>GO</span> <span>•</span>{" "}
+                    <span>PYTHON</span> <span>•</span> <span>WASM</span>{" "}
+                    <span>•</span> <span>CODEX</span> <span>•</span>{" "}
+                    <span>ARCH BTW</span> <span>•</span> <span>REACT</span>{" "}
+                    <span>•</span> <span>NEXT.JS</span> <span>•</span>{" "}
+                    <span>TYPESCRIPT</span> <span>•</span> <span>RUST</span>{" "}
+                    <span>•</span> <span>C++</span> <span>•</span>{" "}
+                    <span>JS</span> <span>•</span> <span>GO</span>{" "}
+                    <span>•</span> <span>PYTHON</span> <span>•</span>{" "}
+                    <span>WASM</span>
+                  </div>
                 </div>
               </div>
             </div>

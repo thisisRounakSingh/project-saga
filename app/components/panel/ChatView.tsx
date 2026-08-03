@@ -1,38 +1,53 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { useSagaStore } from '@/store/sagaStore';
-import { X, Send, Bot, User, Pin, Plus, Trash2, RefreshCcw } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from "react";
+import { useSagaStore } from "@/store/sagaStore";
+import {
+  X,
+  Send,
+  Bot,
+  User,
+  Pin,
+  Plus,
+  Trash2,
+  RefreshCcw,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ChatView() {
-  const chatTabs = useSagaStore(state => state.chatTabs);
-  const activeChatTabId = useSagaStore(state => state.activeChatTabId);
-  const createChatTab = useSagaStore(state => state.createChatTab);
-  const switchChatTab = useSagaStore(state => state.switchChatTab);
-  const closeChatTab = useSagaStore(state => state.closeChatTab);
-  const restoreChatTab = useSagaStore(state => state.restoreChatTab);
-  const removePendingChatContext = useSagaStore(state => state.removePendingChatContext);
-  const clearPendingChatContext = useSagaStore(state => state.clearPendingChatContext);
-  const pinnedNodeIds = useSagaStore(state => state.pinnedNodeIds);
-  const submitDirectQuestion = useSagaStore(state => state.submitDirectQuestion);
-  
-  const activeTab = chatTabs.find(t => t.id === activeChatTabId);
+  const chatTabs = useSagaStore((state) => state.chatTabs);
+  const activeChatTabId = useSagaStore((state) => state.activeChatTabId);
+  const createChatTab = useSagaStore((state) => state.createChatTab);
+  const switchChatTab = useSagaStore((state) => state.switchChatTab);
+  const closeChatTab = useSagaStore((state) => state.closeChatTab);
+  const restoreChatTab = useSagaStore((state) => state.restoreChatTab);
+  const removePendingChatContext = useSagaStore(
+    (state) => state.removePendingChatContext,
+  );
+  const clearPendingChatContext = useSagaStore(
+    (state) => state.clearPendingChatContext,
+  );
+  const pinnedNodeIds = useSagaStore((state) => state.pinnedNodeIds);
+  const submitDirectQuestion = useSagaStore(
+    (state) => state.submitDirectQuestion,
+  );
+
+  const activeTab = chatTabs.find((t) => t.id === activeChatTabId);
   const pendingChatContext = activeTab?.pendingChatContext || [];
   const chatHistory = activeTab?.chatHistory || [];
-  const toggleNodePin = useSagaStore(state => state.toggleNodePin);
-  const isTyping = useSagaStore(state => state.isTyping);
+  const toggleNodePin = useSagaStore((state) => state.toggleNodePin);
+  const isTyping = useSagaStore((state) => state.isTyping);
 
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [showTrash, setShowTrash] = useState(false);
-  
-  const activeTabs = chatTabs.filter(t => !t.isArchived);
-  const archivedTabs = chatTabs.filter(t => t.isArchived);
-  
+
+  const activeTabs = chatTabs.filter((t) => !t.isArchived);
+  const archivedTabs = chatTabs.filter((t) => t.isArchived);
+
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatHistory.length, isTyping]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -40,48 +55,53 @@ export function ChatView() {
     if (!input.trim() && pendingChatContext.length === 0) return;
 
     // Build context prefix if any
-    const contextPrefix = pendingChatContext.length > 0 
-      ? `[Referring to ${pendingChatContext.length} quote(s)]\n` 
-      : '';
-      
+    const contextPrefix =
+      pendingChatContext.length > 0
+        ? `[Referring to ${pendingChatContext.length} quote(s)]\n`
+        : "";
+
     const fullMessage = contextPrefix + input;
     submitDirectQuestion(fullMessage);
 
-    setInput('');
+    setInput("");
     clearPendingChatContext();
   };
 
   return (
     <div className="absolute inset-0 flex flex-col bg-background">
-      
       {/* Mock Session Indicator */}
       <div className="shrink-0 bg-muted/20 text-muted text-[10px] uppercase tracking-widest font-bold text-center py-1 border-b-[3px] border-border border-dashed">
         Mock Session - Local Data Only
       </div>
-      
+
       {/* Chat Tabs Bar */}
       <div className="shrink-0 flex items-center justify-between bg-muted/10 border-b-[3px] border-border p-2 gap-2 relative">
         <div className="flex items-center gap-2 overflow-x-auto">
           {activeTabs.map((tab) => (
-            <div 
-              key={tab.id} 
+            <div
+              key={tab.id}
               className={`flex items-center gap-2 px-3 py-1.5 border-2 cursor-pointer transition-all ${
-                activeChatTabId === tab.id 
-                  ? 'bg-accent text-white border-accent shadow-[2px_2px_0_var(--color-border)] dark:shadow-[2px_2px_0_#fff]'
-                  : 'bg-background border-border hover:-translate-y-0.5'
+                activeChatTabId === tab.id
+                  ? "bg-accent text-white border-accent shadow-[2px_2px_0_var(--color-border)] dark:shadow-[2px_2px_0_#fff]"
+                  : "bg-background border-border hover:-translate-y-0.5"
               }`}
               onClick={() => switchChatTab(tab.id)}
             >
-              <span className="text-xs font-bold whitespace-nowrap">{tab.title}</span>
-              <button 
-                onClick={(e) => { e.stopPropagation(); closeChatTab(tab.id); }}
+              <span className="text-xs font-bold whitespace-nowrap">
+                {tab.title}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeChatTab(tab.id);
+                }}
                 className="hover:text-red-500"
               >
                 <X size={12} />
               </button>
             </div>
           ))}
-          <button 
+          <button
             onClick={createChatTab}
             className="shrink-0 p-1.5 border-2 border-border bg-background hover:-translate-y-0.5 transition-all"
           >
@@ -89,10 +109,12 @@ export function ChatView() {
           </button>
         </div>
 
-        <button 
+        <button
           onClick={() => setShowTrash(!showTrash)}
           className={`shrink-0 p-1.5 border-2 transition-all ${
-            showTrash ? 'bg-accent text-white border-accent' : 'bg-background border-border hover:-translate-y-0.5 text-muted'
+            showTrash
+              ? "bg-accent text-white border-accent"
+              : "bg-background border-border hover:-translate-y-0.5 text-muted"
           }`}
           title="Archived Tabs"
         >
@@ -108,14 +130,23 @@ export function ChatView() {
               exit={{ opacity: 0, y: -10 }}
               className="absolute right-2 top-full mt-2 w-48 bg-background border-[3px] border-border shadow-[4px_4px_0_var(--color-border)] dark:shadow-[4px_4px_0_#fff] z-100 flex flex-col p-2 gap-2"
             >
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-muted border-b-2 border-border pb-1 mb-1">Archived Tabs</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-muted border-b-2 border-border pb-1 mb-1">
+                Archived Tabs
+              </h4>
               {archivedTabs.length === 0 ? (
-                <p className="text-xs text-muted text-center py-2">No archived tabs</p>
+                <p className="text-xs text-muted text-center py-2">
+                  No archived tabs
+                </p>
               ) : (
-                archivedTabs.map(tab => (
-                  <div key={tab.id} className="flex items-center justify-between p-2 bg-muted/10 hover:bg-muted/20 border-2 border-border text-xs">
-                    <span className="font-bold truncate max-w-25">{tab.title}</span>
-                    <button 
+                archivedTabs.map((tab) => (
+                  <div
+                    key={tab.id}
+                    className="flex items-center justify-between p-2 bg-muted/10 hover:bg-muted/20 border-2 border-border text-xs"
+                  >
+                    <span className="font-bold truncate max-w-25">
+                      {tab.title}
+                    </span>
+                    <button
                       onClick={() => {
                         restoreChatTab(tab.id);
                         setShowTrash(false);
@@ -148,27 +179,33 @@ export function ChatView() {
               key={msg.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
+              className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
             >
-              <div className={`shrink-0 w-8 h-8 rounded border-[3px] border-border flex items-center justify-center ${
-                msg.role === 'user' ? 'bg-muted/20' : 'bg-accent text-white'
-              }`}>
-                {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
+              <div
+                className={`shrink-0 w-8 h-8 rounded border-[3px] border-border flex items-center justify-center ${
+                  msg.role === "user" ? "bg-muted/20" : "bg-accent text-white"
+                }`}
+              >
+                {msg.role === "user" ? <User size={16} /> : <Bot size={16} />}
               </div>
-              
-              <div className={`flex flex-col gap-1 max-w-[80%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
-                <div className={`p-3 border-[3px] border-border text-sm leading-relaxed whitespace-pre-wrap ${
-                  msg.role === 'user' 
-                    ? 'bg-muted/10 shadow-[2px_2px_0_var(--color-border)] dark:shadow-[2px_2px_0_#fff]' 
-                    : 'bg-background shadow-[2px_2px_0_var(--color-accent)] border-l-[3px] border-l-accent'
-                }`}>
+
+              <div
+                className={`flex flex-col gap-1 max-w-[80%] ${msg.role === "user" ? "items-end" : "items-start"}`}
+              >
+                <div
+                  className={`p-3 border-[3px] border-border text-sm leading-relaxed whitespace-pre-wrap ${
+                    msg.role === "user"
+                      ? "bg-muted/10 shadow-[2px_2px_0_var(--color-border)] dark:shadow-[2px_2px_0_#fff]"
+                      : "bg-background shadow-[2px_2px_0_var(--color-accent)] border-l-[3px] border-l-accent"
+                  }`}
+                >
                   {msg.text}
                 </div>
               </div>
             </motion.div>
           ))
         )}
-        
+
         {isTyping && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -188,22 +225,27 @@ export function ChatView() {
 
       {/* Input Area */}
       <div className="shrink-0 border-t-[3px] border-border bg-background p-4">
-        
         {/* Context Tray (Pending Quotes + Pinned Nodes) */}
         <AnimatePresence>
           {(pendingChatContext.length > 0 || pinnedNodeIds.length > 0) && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="flex flex-wrap gap-2 mb-3"
             >
               {pendingChatContext.map((ctx, idx) => (
-                <div key={idx} className="flex items-center gap-2 bg-muted/20 border-2 border-border rounded-full px-3 py-1 text-xs">
-                  <span className="font-bold text-muted-foreground truncate max-w-37.5" title={ctx.text}>
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 bg-muted/20 border-2 border-border rounded-full px-3 py-1 text-xs"
+                >
+                  <span
+                    className="font-bold text-muted-foreground truncate max-w-37.5"
+                    title={ctx.text}
+                  >
                     &quot;{ctx.text}&quot;
                   </span>
-                  <button 
+                  <button
                     onClick={() => removePendingChatContext(idx)}
                     className="text-muted hover:text-foreground transition-colors"
                   >
@@ -212,12 +254,18 @@ export function ChatView() {
                 </div>
               ))}
               {pinnedNodeIds.map((nodeId) => (
-                <div key={`pin-${nodeId}`} className="flex items-center gap-2 bg-accent/20 border-2 border-accent/50 rounded-full px-3 py-1 text-xs">
+                <div
+                  key={`pin-${nodeId}`}
+                  className="flex items-center gap-2 bg-accent/20 border-2 border-accent/50 rounded-full px-3 py-1 text-xs"
+                >
                   <Pin size={12} className="text-accent" />
-                  <span className="font-bold text-foreground truncate max-w-37.5" title={`Pinned: ${nodeId}`}>
+                  <span
+                    className="font-bold text-foreground truncate max-w-37.5"
+                    title={`Pinned: ${nodeId}`}
+                  >
                     {nodeId}
                   </span>
-                  <button 
+                  <button
                     onClick={() => toggleNodePin(nodeId)}
                     className="text-muted hover:text-foreground transition-colors"
                   >
@@ -246,7 +294,6 @@ export function ChatView() {
           </button>
         </form>
       </div>
-      
     </div>
   );
 }

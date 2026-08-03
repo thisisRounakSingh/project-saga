@@ -1,7 +1,11 @@
-import { getSagaSession } from '@/lib/saga/getSagaSession';
-import SagaClientView from './SagaClientView';
+import { getSagaSession } from "@/lib/saga/getSagaSession";
+import SagaClientView from "./SagaClientView";
 
-export default async function SagaSessionPage({ params }: { params: Promise<{ sessionId: string }> }) {
+export default async function SagaSessionPage({
+  params,
+}: {
+  params: Promise<{ sessionId: string }>;
+}) {
   const { sessionId } = await params;
   const session = await getSagaSession(sessionId);
 

@@ -3,15 +3,20 @@ import path from "path";
 import { SagaSessionSchema } from "../lib/saga/schema";
 
 function validateFixture() {
-  const fixturePath = path.join(process.cwd(), "fixtures", "sessions", "vscode-demo.saga.json");
-  
+  const fixturePath = path.join(
+    process.cwd(),
+    "fixtures",
+    "sessions",
+    "vscode-demo.saga.json",
+  );
+
   if (!fs.existsSync(fixturePath)) {
     console.error(`Fixture file not found at: ${fixturePath}`);
     process.exit(1);
   }
 
   const rawData = fs.readFileSync(fixturePath, "utf-8");
-  
+
   try {
     const jsonData = JSON.parse(rawData);
     const result = SagaSessionSchema.safeParse(jsonData);

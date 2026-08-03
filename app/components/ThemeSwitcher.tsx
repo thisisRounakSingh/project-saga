@@ -29,7 +29,13 @@ export function ThemeSwitcher() {
 
   const cycleTheme = () => {
     const nextTheme =
-      theme === "auto" ? "light" : theme === "light" ? "dark" : theme === "dark" ? "dim" : "auto";
+      theme === "auto"
+        ? "light"
+        : theme === "light"
+          ? "dark"
+          : theme === "dark"
+            ? "dim"
+            : "auto";
     setTheme(nextTheme);
     localStorage.setItem("theme", nextTheme);
     applyTheme(nextTheme);

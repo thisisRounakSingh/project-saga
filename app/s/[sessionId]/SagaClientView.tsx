@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useSagaStore } from '@/store/sagaStore';
-import { RepoContainer } from '@/app/components/chrome/RepoContainer';
-import { ActSelector } from '@/app/components/chrome/ActSelector';
-import { PlaybackControls } from '@/app/components/chrome/PlaybackControls';
-import { SearchBar } from '@/app/components/chrome/SearchBar';
-import { ThemeSwitcher } from '@/app/components/ThemeSwitcher';
-import { CursorSwitcher } from '@/app/components/CursorSwitcher';
-import { DiagramCanvas } from '@/app/components/canvas/DiagramCanvas';
-import { SidePanel } from '@/app/components/panel/SidePanel';
-import { useEffect } from 'react';
-import { SagaSession } from '@/lib/saga/schema';
+import { useSagaStore } from "@/store/sagaStore";
+import { RepoContainer } from "@/app/components/chrome/RepoContainer";
+import { ActSelector } from "@/app/components/chrome/ActSelector";
+import { PlaybackControls } from "@/app/components/chrome/PlaybackControls";
+import { SearchBar } from "@/app/components/chrome/SearchBar";
+import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
+import { CursorSwitcher } from "@/app/components/CursorSwitcher";
+import { DiagramCanvas } from "@/app/components/canvas/DiagramCanvas";
+import { SidePanel } from "@/app/components/panel/SidePanel";
+import { useEffect } from "react";
+import { SagaSession } from "@/lib/saga/schema";
 
 export default function SagaClientView({ session }: { session: SagaSession }) {
   const setSessionData = useSagaStore((state) => state.setSessionData);
@@ -25,7 +25,7 @@ export default function SagaClientView({ session }: { session: SagaSession }) {
   return (
     <div className="flex flex-col flex-1 h-full w-full relative">
       {/* Top Chrome */}
-      <nav className="flex items-center justify-between px-6 py-4 border-b-[3px] border-border bg-background z-50">
+      <nav className="relative flex items-center justify-between px-6 py-4 border-b-[3px] border-border bg-background z-100">
         <RepoContainer />
         <div className="flex items-center gap-4">
           <SearchBar />

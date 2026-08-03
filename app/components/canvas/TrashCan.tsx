@@ -106,12 +106,10 @@ export function TrashCan() {
                       </span>
                       <button
                         onClick={() => {
-                          useSagaStore
-                            .getState()
-                            .addPendingChatContext({
-                              actId: file.actId,
-                              text: `Deleted File: ${file.name}\nReason: ${file.summary}`,
-                            });
+                          useSagaStore.getState().addPendingChatContext({
+                            actId: file.actId,
+                            text: `Deleted File: ${file.name}\nReason: ${file.summary}`,
+                          });
                           useSagaStore.getState().setActivePanelTab("chat");
                           useSagaStore.getState().setPanelState("expanded");
                         }}
