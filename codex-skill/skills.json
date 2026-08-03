@@ -1,0 +1,8 @@
+{
+  "name": "project-saga",
+  "version": "1.0.0",
+  "description": "Saga visualization skill for Codex",
+  "skills": [
+    "."
+  ]
+}
